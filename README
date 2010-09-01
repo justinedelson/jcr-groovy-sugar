@@ -1,0 +1,8 @@
+This is a container for any kind of syntatic sugar added to the javax.jcr API with Groovy.
+
+At first, all that's been added is property access, i.e.
+
+node.propname
+
+translates into node.getProperty("propname").toString()
+
