@@ -42,17 +42,16 @@ class Sweetener {
     }
     
     private static getNodeProperty = { String name ->
-        def mc = Node.metaClass
+        assert name
         
-        def getterName = "get" + name.substring(0, 1).toUpperCase() + name.substring(1)
+        def mc = delegate.metaClass
         
-        MetaMethod getterMethod = mc.pickMethod(getterName, [] as Class[])
+        def metaProperty = mc.getMetaProperty(name)
         
-        def result
-        if (getterMethod) {
-            return getterMethod.doMethodInvoke(delegate, [] as Object[])
+        if (metaProperty) {
+            return metaProperty.getProperty(delegate)
         } else {
-            result = []
+            def result = []
             
             def it = delegate.getNodes(name);
             while (it.hasNext()) {
@@ -74,14 +73,14 @@ class Sweetener {
                     result << Sweetener.convertNodeToJavaObject(delegate, prop.getValue())
                 }
             }
-        }
         
-        if (result.size() == 0) {
-            return null
-        } else if (result.size() == 1) {
-            return result[0]
-        } else {
-            return result
+            if (result.size() == 0) {
+                return null
+            } else if (result.size() == 1) {
+                return result[0]
+            } else {
+                return result
+            }
         }
     }
 }
