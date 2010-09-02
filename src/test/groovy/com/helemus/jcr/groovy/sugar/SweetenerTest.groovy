@@ -23,9 +23,21 @@ class SweetenerTest extends RepositoryTestBase {
         Sweetener.modifyNodeMetaClass();
         
         Node n = getTestRootNode();
+
         n.setProperty("testprop", "value");
+        n.setProperty("testprop2", "value2");
         
         assertEquals "value", n.testprop
+        
+        assertEquals "value", n['testprop']
+        
+        assertEquals(['value', 'value2'], n['test*'].sort())
+        
+        assertEquals "nt:unstructured", n.primaryNodeType.name
+        
+        assertEquals n.getName(), n.name
+        
+        assertEquals n.getPath(), n.path
         
     }
 

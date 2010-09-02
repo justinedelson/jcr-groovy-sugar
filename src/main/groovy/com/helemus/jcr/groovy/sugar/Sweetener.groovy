@@ -42,11 +42,15 @@ class Sweetener {
     }
     
     private static getNodeProperty = { String name ->
-        def metaProperty = Node.metaClass.getMetaProperty(name)
+        def mc = Node.metaClass
+        
+        def getterName = "get" + name.substring(0, 1).toUpperCase() + name.substring(1)
+        
+        MetaMethod getterMethod = mc.pickMethod(getterName, [] as Class[])
         
         def result
-        if (metaProperty) {
-            result = metaProperty.getProperty(delegate)
+        if (getterMethod) {
+            return getterMethod.doMethodInvoke(delegate, [] as Object[])
         } else {
             result = []
             
